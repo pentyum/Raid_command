@@ -1,0 +1,15 @@
+name: Raid_command
+main: com.piggest.minecraft.bukkit.raid_command.Raid_command
+api-version: 1.14
+version: 0.0.1
+author: Pentyum
+commands:
+  raid:
+    description: Raid command.
+    usage: /<command> <bad_omen_level> <position>.
+    permission: raid_command.run
+    permission-message: You don't have permission
+permissions:
+  raid_command.run:
+    description: Run raid.
+    default: op
