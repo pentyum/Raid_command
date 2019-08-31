@@ -33,6 +33,7 @@ public class Raid_command extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (!sender.hasPermission("raid_command.run")) {
 			sender.sendMessage("你没有运行袭击的权限");
+			return true;
 		}
 		int level = 1;
 		Location loc = null;
