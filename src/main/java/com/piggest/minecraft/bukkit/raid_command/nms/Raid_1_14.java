@@ -11,6 +11,23 @@ import net.minecraft.server.v1_14_R1.PersistentRaid;
 import net.minecraft.server.v1_14_R1.WorldServer;
 
 public class Raid_1_14 implements Raid {
+	Field map_field;
+	Field next_id_field;
+	Field bad_omen_field;
+
+	public Raid_1_14() {
+		try {
+			map_field = PersistentRaid.class.getDeclaredField("a");
+			next_id_field = PersistentRaid.class.getDeclaredField("c");
+			map_field.setAccessible(true);// 允许访问私有字段
+			next_id_field.setAccessible(true);
+			bad_omen_field = net.minecraft.server.v1_14_R1.Raid.class.getDeclaredField("o");
+			bad_omen_field.setAccessible(true);
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	public Raid_info trigger_raid(Location loc, int bad_omen_level) {
 		CraftBlock craft_block = (CraftBlock) loc.getBlock();
@@ -22,20 +39,14 @@ public class Raid_1_14 implements Raid {
 		WorldServer world_nms = world.getHandle();
 		PersistentRaid persistentraid = world_nms.C();
 
-		Field map_field;
-		Field next_id_field;
 		int next_id = 0;
 		Map<Integer, net.minecraft.server.v1_14_R1.Raid> raid_map = null;
 		try {
-			map_field = PersistentRaid.class.getDeclaredField("a");
-			next_id_field = PersistentRaid.class.getDeclaredField("c");
-			map_field.setAccessible(true);// 允许访问私有字段
-			next_id_field.setAccessible(true);
 			raid_map = (Map<Integer, net.minecraft.server.v1_14_R1.Raid>) map_field.get(persistentraid);
 			next_id = (int) next_id_field.get(persistentraid);
 			next_id++;
 			next_id_field.set(persistentraid, next_id);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+		} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -44,12 +55,9 @@ public class Raid_1_14 implements Raid {
 		if (bad_omen_level > raid.l()) {
 			bad_omen_level = raid.l();
 		}
-		Field bad_omen_field;
 		try {
-			bad_omen_field = net.minecraft.server.v1_14_R1.Raid.class.getDeclaredField("o");
-			bad_omen_field.setAccessible(true);
 			bad_omen_field.setInt(raid, bad_omen_level);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+		} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 		raid_map.put(next_id, raid);
