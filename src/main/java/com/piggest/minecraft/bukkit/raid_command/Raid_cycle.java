@@ -19,9 +19,8 @@ public class Raid_cycle extends BukkitRunnable {
 	@Override
 	public void run() {
 		if (this.times > 0 && this.completed_times >= this.times) {
-			Raid_command.instance.getServer().broadcastMessage("袭击保卫成功");
+			Raid_command.instance.getServer().broadcastMessage("袭击已经全部生成完毕");
 			this.cancel();
-			this.central_villager.setCustomName("保卫成功的村民");
 			Raid_command.instance.get_raid_cycle().remove(this.central_villager);
 			return;
 		}
