@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.raid_command;
 
+import org.bukkit.Raid;
 import org.bukkit.entity.Villager;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -20,12 +21,14 @@ public class Raid_cycle extends BukkitRunnable {
 		if (this.times > 0 && this.completed_times >= this.times) {
 			Raid_command.instance.getServer().broadcastMessage("袭击保卫成功");
 			this.cancel();
+			this.central_villager.setCustomName("保卫成功的村民");
 			Raid_command.instance.get_raid_cycle().remove(this.central_villager);
 			return;
 		}
 		int level = completed_times + 1;
-		Raid_command.instance.getServer().broadcastMessage("第" + level + "次袭击开始");
-		NMS_manager.raid_provider.trigger_raid(central_villager.getLocation(), level);
+		Raid raid = NMS_manager.raid_provider.trigger_raid(central_villager.getLocation(), level);
+		Raid_command.instance.getServer().broadcastMessage("第" + level + "次袭击开始,本次袭击的不详征兆等级为" + raid.getBadOmenLevel());
+
 		this.completed_times++;
 	}
 

@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Raid;
 import org.bukkit.World;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
@@ -19,7 +20,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.piggest.minecraft.bukkit.raid_command.nms.NMS_manager;
-import com.piggest.minecraft.bukkit.raid_command.nms.Raid_info;
 
 public class Raid_command extends JavaPlugin {
 	public static Raid_command instance;
@@ -28,7 +28,7 @@ public class Raid_command extends JavaPlugin {
 	private final String usage = "/raid <不祥征兆等级> <位置或者玩家名>，不输入位置则默认你自己的位置";
 	private final String unknown_location = "在控制台执行你必须指定一个位置";
 	private FileConfiguration config = null;
-	private HashMap<Villager, Raid_cycle> raid_cycle_map;
+	private HashMap<Villager, Raid_cycle> raid_cycle_map = new HashMap<Villager, Raid_cycle>();
 
 	public Raid_command() {
 		super();
@@ -125,11 +125,11 @@ public class Raid_command extends JavaPlugin {
 			sender.sendMessage(usage);
 			return true;
 		}
-		Raid_info raid_result = NMS_manager.raid_provider.trigger_raid(loc, level);
-		if (raid_result != null) {
+		Raid raid = NMS_manager.raid_provider.trigger_raid(loc, level);
+		if (raid != null) {
 			String msg = "袭击触发成功";
-			msg += ", 编号: " + raid_result.id;
-			msg += ", 不祥征兆等级: " + raid_result.bad_omen_level;
+			//msg += ", 编号: " + raid;
+			msg += ", 不祥征兆等级: " + raid.getBadOmenLevel();
 			msg += "\n位置: " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + ","
 					+ loc.getWorld().getName();
 			sender.sendMessage(msg);

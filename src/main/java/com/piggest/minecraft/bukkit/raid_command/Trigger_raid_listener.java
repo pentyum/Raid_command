@@ -56,11 +56,14 @@ public class Trigger_raid_listener implements Listener {
 					Matcher m = r.matcher(displayname);
 					if (m.find()) {
 						times = Integer.parseInt(m.group(1));
+					} else {
+						return;
 					}
 					meta.setDisplayName("袭击中心村民");
 					item.setItemMeta(meta);
 					Raid_cycle raid_cycle = new Raid_cycle(villager, times);
 					Raid_command.instance.get_raid_cycle().put(villager, raid_cycle);
+					raid_cycle.runTaskTimerAsynchronously(Raid_command.instance, 10, 60 * 20);
 				}
 			}
 

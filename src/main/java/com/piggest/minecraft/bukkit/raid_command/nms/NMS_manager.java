@@ -3,7 +3,7 @@ package com.piggest.minecraft.bukkit.raid_command.nms;
 import com.piggest.minecraft.bukkit.raid_command.Raid_command;
 
 public class NMS_manager {
-	public static Raid raid_provider = null;
+	public static Raid_provider raid_provider = null;
 
 	public NMS_manager(String version) {
 		Raid_command.instance.getLogger().info("当前NMS:" + version);
